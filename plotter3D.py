@@ -8,7 +8,7 @@ import matplotlib
 
 def vector_3D_plotter(state: np.array):
     fig = plt.figure()
-    ax = fig.gca(projection='3d')
+    ax = fig.add_subplot(projection='3d')
     
     colors = np.array([0, 0.5, 1])
     norm = Normalize()
