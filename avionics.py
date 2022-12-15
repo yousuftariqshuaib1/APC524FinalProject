@@ -11,6 +11,16 @@ def overlay(back: np.array, fore: np.array) -> np.array :
     result = back * (1 - alpha_mask) + overlay_colors * alpha_mask
     return result
 
+def draw_airspeed(airspeed: float, scale: float, base: np.array, dial: np.array) -> np.array:
+    h, w = base.shape[:2]
+    dims = [w, h]
+    middle = [h/2, w/2]
+    angle = airspeed * -0.77
+    rot = cv2.getRotationMatrix2D(middle, angle, 1)
+    dial = cv2.warpAffine(dial, rot, dims)
+    result = overlay(base, dial)
+    return result
+
 def draw_altimeter(altitude: float, scale: float, base: np.array, dial_10km: np.array, dial_1km: np.array, dial_100m: np.array) -> np.array:
     h, w = base.shape[:2]
     dims = [w, h]
@@ -23,9 +33,6 @@ def draw_altimeter(altitude: float, scale: float, base: np.array, dial_10km: np.
     tens_angle = -36 * tens
     kms_angle = -36 * kms
     ms_angle = -0.36 * ms
-
-    print(base.shape)
-    print(dial_10km.shape)
 
     rot_tens = cv2.getRotationMatrix2D(middle, tens_angle, 1)
     rot_kms = cv2.getRotationMatrix2D(middle, kms_angle, 1)
