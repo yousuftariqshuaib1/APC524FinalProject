@@ -36,7 +36,10 @@ def get_temperature(altitude: float) -> float: # Kelvin
     low_temp = TEMPERATURE_TABLE[low_alt]
     high_temp = TEMPERATURE_TABLE[high_alt]
     
-    temperature = low_temp + (altitude - low_alt) * (high_temp - low_temp) / (high_alt - low_alt)
+    if (high_alt - low_alt != 0):
+        temperature = low_temp + (altitude - low_alt) * (high_temp - low_temp) / (high_alt - low_alt)
+    else:
+        temperature = low_temp
     return temperature
 
 # Get's speed of sound at altitude
@@ -52,20 +55,23 @@ def get_geopotential_altitude(altitude: float) -> float: # m
 
 # Calculates ambient pressure at altitude
 def get_pressure(altitude: float) -> float: # Pa
-    low_alt = int(math.floor(altitude / 1000) * 1000)
-    high_alt = int(math.ceil(altitude / 1000) * 1000)
-    
-    tempLapseRate = (get_temperature(high_alt) - get_temperature(low_alt))/1000
     
     if (altitude < 11000):
         refPressure = 101325
         refAltitude = 0
+        tempLapseRate = -0.0065
     else:
         refPressure = 22632.10
         refAltitude = 11000
+        tempLapseRate = 0
     
     refTemp = get_temperature(refAltitude)
-    pressure = refPressure * ((refTemp + (altitude - refAltitude) * tempLapseRate) / refTemp) ** (-GRAVITY * MOLAR_MASS / UNI_GAS_CONSTANT / tempLapseRate)
+    
+    if (tempLapseRate == 0):
+        pressure = refPressure * math.exp(-GRAVITY * MOLAR_MASS * (altitude - refAltitude) / UNI_GAS_CONSTANT / refTemp)
+    else:
+        pressure = refPressure * ((refTemp + (altitude - refAltitude) * tempLapseRate) / refTemp) ** (-GRAVITY * MOLAR_MASS \
+                                                                                                      / UNI_GAS_CONSTANT / tempLapseRate)
     
     return pressure
 
