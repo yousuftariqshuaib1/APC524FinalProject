@@ -1,46 +1,84 @@
+
 import keyboard
 import numpy as np
 
 #maximum control surface deflections - test and correct later
 #aileron and rudder assumed to be symmetric in travel
-MAX_ELEV = 2.0
-MIN_ELEV = 2.0
-MAX_AIL = 2.0
-MAX_RUD = 2.0
-MAX_THROT = 100.0
-MIN_THROT = 5.0
+# Units are in degrees
+MAX_ELEV = 30.0
+MIN_ELEV = 20.0
+MAX_AIL = 20.0
+MAX_RUD = 35.0
+
+# Maximum and minimum thrust of plane
+# Units in newtons
+MAX_THRUST = 20000.0
+MIN_THRUST = 0.0
+
 #proportional gain for control input tracking
-K_P = 0.01
-#throttle update speed
-THROT_SENS = 0.1
+K_P_ELEV = 0.1
+K_P_ELEV_NEG =  0.2
+K_P_AIL = 0.1
+K_P_AIL_NEG = 0.2
+K_P_RUD = 0.1
+K_P_RUD_NEG = 0.2
+K_P_THRUST = 10.0
 
 def update(control: np.array) -> np.array :
-    ref_stick = np.array([0, 0, 0, 0])
+    # Elevator Control
     if keyboard.is_pressed("w"):
-        ref_stick[0]= MAX_ELEV
-    if keyboard.is_pressed("s"):
-        ref_stick[0]= -MIN_ELEV
-        
-    if keyboard.is_pressed("a"):
-        ref_stick[1]= MAX_AIL
-        
-    if keyboard.is_pressed("d"):
-        ref_stick[1]= -MAX_AIL
-        
-    if keyboard.is_pressed("q"):
-        ref_stick[2]= MAX_RUD
-        
-    if keyboard.is_pressed("e"):
-        ref_stick[2]= -MAX_RUD
-
-    if keyboard.is_pressed("up arrow"):
-        if control[3] < (MAX_THROT - THROT_SENS):
-            control[3] += THROT_SENS
-
-    if keyboard.is_pressed("down arrow"):
-        if control[3] > (MIN_THROT + THROT_SENS):
-            control[3] -= THROT_SENS
+        if (control[0] <= MAX_ELEV - K_P_ELEV):
+            control[0] += K_P_ELEV
+    elif keyboard.is_pressed("s"):
+        if (control[0] >= -MIN_ELEV + K_P_ELEV):
+            control[0] -= K_P_ELEV
+    else:
+        if (control[0] <= K_P_ELEV_NEG or control[0] <= -K_P_ELEV_NEG):
+            control[0] = 0
+        else:
+            if (control[0] > 0):
+                control[0] -= K_P_ELEV_NEG
+            elif (control[0] < 0):
+                control[0] += K_P_ELEV_NEG
     
-    err = control - ref_stick
-    control = control - err * K_P
+    # Aileron control
+    if keyboard.is_pressed("a"):
+        if (control[1] <= MAX_AIL - K_P_AIL):
+            control[1] += K_P_AIL
+    elif keyboard.is_pressed("d"):
+        if (control[1] >= -MAX_AIL + K_P_AIL):
+            control[1] -= K_P_AIL
+    else:
+        if (control[1] <= K_P_AIL_NEG or control[1] <= -K_P_AIL_NEG):
+            control[1] = 0
+        else:
+            if (control[1] > 0):
+                control[1] -= K_P_AIL_NEG
+            elif (control[1] < 0):
+                control[1] += K_P_AIL_NEG
+    
+    # Rudder control
+    if keyboard.is_pressed("q"):
+        if (control[2] <= MAX_RUD - K_P_RUD):
+            control[2] += K_P_RUD
+    elif keyboard.is_pressed("e"):
+        if (control[2] >= -MAX_RUD + K_P_RUD):
+            control[2] -= K_P_RUD
+    else:
+        if (control[2] <= K_P_RUD_NEG or control[2] <= -K_P_RUD_NEG):
+            control[2] = 0
+        else: 
+            if (control[2] > 0):
+                control[2] -= K_P_RUD_NEG
+            elif (control[2] < 0):
+                control[2] += K_P_RUD_NEG
+            
+    # Thrust control
+    if keyboard.is_pressed("UP"):
+        if (control[3] <= MAX_THRUST - K_P_THRUST):
+            control[3] += K_P_THRUST
+    elif keyboard.is_pressed("DOWN"):
+        if (control[3] >= MIN_THRUST + K_P_THRUST):
+            control[3] -= K_P_THRUST
+            
     return control
