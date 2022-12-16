@@ -17,7 +17,7 @@ import controlV2
 from pydub import AudioSegment
 
 
-def main_GUI():
+def main_GUI(control_value):
     # Horizon Instrument
     horiz_base = cv2.imread("images/horizon_base.png")
     horiz_outer = cv2.imread("images/horizon_outer.png", cv2.IMREAD_UNCHANGED)
@@ -121,7 +121,11 @@ def main_GUI():
 
         # Updates dynamics and control 
         state = dynamics.step(state, control_vec, delta_t)
-        control_vec = control.update(control_vec)
+        
+        if (control_value):
+            control_vec = control.update(control_vec)
+        else:
+            control_vec = controlV2.update(control_vec)
 
         # Creating quiver plot
         plotter3D.vector_3D_plotter(state, fig3D)
