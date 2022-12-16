@@ -33,7 +33,7 @@ def update(control: np.array) -> np.array :
         if (control[0] >= -MIN_ELEV + K_P_ELEV):
             control[0] -= K_P_ELEV
     else:
-        if (control[0] <= K_P_ELEV_NEG or control[0] <= -K_P_ELEV_NEG):
+        if (abs(control[0]) <= K_P_ELEV_NEG):
             control[0] = 0
         else:
             if (control[0] > 0):
@@ -49,7 +49,7 @@ def update(control: np.array) -> np.array :
         if (control[1] >= -MAX_AIL + K_P_AIL):
             control[1] -= K_P_AIL
     else:
-        if (control[1] <= K_P_AIL_NEG or control[1] <= -K_P_AIL_NEG):
+        if (abs(control[1]) <= K_P_AIL_NEG):
             control[1] = 0
         else:
             if (control[1] > 0):
@@ -65,7 +65,7 @@ def update(control: np.array) -> np.array :
         if (control[2] >= -MAX_RUD + K_P_RUD):
             control[2] -= K_P_RUD
     else:
-        if (control[2] <= K_P_RUD_NEG or control[2] <= -K_P_RUD_NEG):
+        if (abs(control[2]) <= K_P_RUD_NEG):
             control[2] = 0
         else: 
             if (control[2] > 0):
@@ -82,3 +82,4 @@ def update(control: np.array) -> np.array :
             control[3] -= K_P_THRUST
             
     return control
+
