@@ -3,7 +3,7 @@ import numpy as np
 
 #maximum control surface deflections - test and correct later
 #aileron and rudder assumed to be symmetric in travel
-MAX_ELEV = 0.5
+MAX_ELEV = 0.7
 MIN_ELEV = 0.5
 MAX_AIL = 0.5
 MAX_RUD = 0.5

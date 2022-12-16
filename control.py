@@ -6,10 +6,10 @@ import time
 #maximum control surface deflections - test and correct later
 #aileron and rudder assumed to be symmetric in travel
 # Units are in degrees
-MAX_ELEV = 30.0
-MIN_ELEV = 20.0
-MAX_AIL = 20.0
-MAX_RUD = 35.0
+MAX_ELEV = 1
+MIN_ELEV = 1
+MAX_AIL = 1
+MAX_RUD = 1
 
 # Maximum and minimum thrust of plane
 # Units in newtons
@@ -17,20 +17,20 @@ MAX_THRUST = 20000.0
 MIN_THRUST = 0.0
 
 #proportional gain for control input tracking
-K_P_ELEV = 1
+K_P_ELEV = 0.1
 K_P_ELEV_NEG =  2
-K_P_AIL = 1
+K_P_AIL = 0.1
 K_P_AIL_NEG = 2
-K_P_RUD = 1
+K_P_RUD = 0.1
 K_P_RUD_NEG = 2
-K_P_THRUST = 200.0
+K_P_THRUST = 20.0
 
 def update(control: np.array) -> np.array :
     # Elevator Control
-    if keyboard.is_pressed("w"):
+    if keyboard.is_pressed("s"):
         if (control[0] <= MAX_ELEV - K_P_ELEV):
             control[0] += K_P_ELEV
-    elif keyboard.is_pressed("s"):
+    elif keyboard.is_pressed("w"):
         if (control[0] >= -MIN_ELEV + K_P_ELEV):
             control[0] -= K_P_ELEV
     else:
