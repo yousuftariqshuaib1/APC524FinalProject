@@ -1,6 +1,7 @@
 
 from typing import Protocol
 import math
+import pytest
 
 # Global Variables
 SPECIFIC_HEAT_RATIO = 1.4 
@@ -70,8 +71,8 @@ def get_pressure(altitude: float) -> float: # Pa
     if (tempLapseRate == 0):
         pressure = refPressure * math.exp(-GRAVITY * MOLAR_MASS * (altitude - refAltitude) / UNI_GAS_CONSTANT / refTemp)
     else:
-        pressure = refPressure * ((refTemp + (altitude - refAltitude) * tempLapseRate) / refTemp) ** (-GRAVITY * MOLAR_MASS \
-                                                                                                      / UNI_GAS_CONSTANT / tempLapseRate)
+        pressure = refPressure * ((refTemp + (altitude - refAltitude) \
+                                   * tempLapseRate) / refTemp) ** (-GRAVITY * MOLAR_MASS / UNI_GAS_CONSTANT / tempLapseRate)
     
     return pressure
 
@@ -95,3 +96,5 @@ def get_dynamic_viscosity(altitude: float) -> float:
 def get_mach_number(altitude: float, velocity: float) -> float:
     mach_number = velocity / get_speed_of_sound(altitude)
     return mach_number
+
+    
