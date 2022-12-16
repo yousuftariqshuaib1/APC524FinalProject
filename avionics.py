@@ -26,8 +26,8 @@ def draw_altimeter(altitude: float, scale: float, base: np.array, dial_10km: np.
     dims = [w, h]
     middle = [h/2, w/2]
 
-    tens = altitude // 10000
-    kms = (altitude % 10000) // 1000
+    tens = altitude / 10000
+    kms = (altitude % 10000) / 1000
     ms = altitude % 1000
 
     tens_angle = -36 * tens

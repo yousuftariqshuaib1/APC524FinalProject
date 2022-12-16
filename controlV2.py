@@ -3,22 +3,22 @@ import numpy as np
 
 #maximum control surface deflections - test and correct later
 #aileron and rudder assumed to be symmetric in travel
-MAX_ELEV = 2.0
-MIN_ELEV = 2.0
-MAX_AIL = 2.0
-MAX_RUD = 2.0
+MAX_ELEV = 0.5
+MIN_ELEV = 0.5
+MAX_AIL = 0.5
+MAX_RUD = 0.5
 MAX_THROT = 100.0
-MIN_THROT = 5.0
+MIN_THROT = 0
 #proportional gain for control input tracking
-K_P = 0.01
+K_P = 0.2
 #throttle update speed
-THROT_SENS = 0.1
+THROT_SENS = 5
 
 def update(control: np.array) -> np.array :
-    ref_stick = np.array([0, 0, 0, 0])
-    if keyboard.is_pressed("w"):
-        ref_stick[0]= MAX_ELEV
+    ref_stick = np.array([0.2, 0, 0, 0])
     if keyboard.is_pressed("s"):
+        ref_stick[0]= MAX_ELEV
+    if keyboard.is_pressed("w"):
         ref_stick[0]= -MIN_ELEV
         
     if keyboard.is_pressed("a"):
