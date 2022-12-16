@@ -42,8 +42,7 @@ def draw_altimeter(altitude: float, scale: float, base: np.array, dial_10km: np.
     dial_1km = cv2.warpAffine(dial_1km, rot_kms, dims)
     dial_100m = cv2.warpAffine(dial_100m, rot_ms, dims)
 
-    print(dial_10km.shape)
-
+    
     inter = overlay(base, dial_10km)
     inter = overlay(inter, dial_1km)
     result = overlay(inter, dial_100m)
@@ -56,7 +55,7 @@ def draw_horizon(roll: float, pitch: float, scale: float, base: np.array, outer:
     dims = np.array([n, n])
     middle = dims / 2
 
-    rot = cv2.getRotationMatrix2D(middle, roll, 1)
+    rot = cv2.getRotationMatrix2D(middle, -roll, 1)
     pitch_trans = np.array([
         [1, 0, 0],
         [0, 1, pitch*3.5]
