@@ -19,10 +19,10 @@ from pydub import AudioSegment
 
 def main_GUI(control_value):
     # Horizon Instrument
-    horiz_base = cv2.imread("images/horizon_base.png")
-    horiz_outer = cv2.imread("images/horizon_outer.png", cv2.IMREAD_UNCHANGED)
-    horiz_roll = cv2.imread("images/horizon_roll.png", cv2.IMREAD_UNCHANGED)
-    horiz_pitch = cv2.imread("images/horizon_pitch.png", cv2.IMREAD_UNCHANGED)
+    horiz_base = cv2.imread("../images/horizon_base.png")
+    horiz_outer = cv2.imread("../images/horizon_outer.png", cv2.IMREAD_UNCHANGED)
+    horiz_roll = cv2.imread("../images/horizon_roll.png", cv2.IMREAD_UNCHANGED)
+    horiz_pitch = cv2.imread("../images/horizon_pitch.png", cv2.IMREAD_UNCHANGED)
 
     horiz_pitch = cv2.resize(horiz_pitch, None, fx = 0.5, fy = 0.5, interpolation= cv2.INTER_CUBIC)
     horiz_roll = cv2.resize(horiz_roll, None, fx = 0.5, fy = 0.5, interpolation= cv2.INTER_CUBIC)
@@ -30,10 +30,10 @@ def main_GUI(control_value):
     horiz_outer = cv2.resize(horiz_outer, None, fx = 0.5, fy = 0.5, interpolation= cv2.INTER_CUBIC)
 
     # Altimeter Instrument
-    alt_base = cv2.imread("images/altimeter_base.png")
-    point_1km = cv2.imread("images/1km_pointer.PNG", cv2.IMREAD_UNCHANGED)
-    point_10km = cv2.imread("images/10km_pointer.PNG", cv2.IMREAD_UNCHANGED) 
-    point_100m = cv2.imread("images/100m_pointer.PNG", cv2.IMREAD_UNCHANGED)
+    alt_base = cv2.imread("../images/altimeter_base.png")
+    point_1km = cv2.imread("../images/1km_pointer.PNG", cv2.IMREAD_UNCHANGED)
+    point_10km = cv2.imread("../images/10km_pointer.PNG", cv2.IMREAD_UNCHANGED) 
+    point_100m = cv2.imread("../images/100m_pointer.PNG", cv2.IMREAD_UNCHANGED)
 
     alt_base = cv2.resize(alt_base, None, fx = 0.5, fy = 0.5, interpolation= cv2.INTER_CUBIC)
     point_10km = cv2.resize(point_10km, None, fx = 0.5, fy = 0.5, interpolation= cv2.INTER_CUBIC)
@@ -41,8 +41,8 @@ def main_GUI(control_value):
     point_100m = cv2.resize(point_100m, None, fx = 0.5, fy = 0.5, interpolation= cv2.INTER_CUBIC)
 
     # Airspeed instrument
-    airspeed_base = cv2.imread("images/airspeed_base.png")
-    airspeed_pointer = cv2.imread("images./airspeed_pointer.png",cv2.IMREAD_UNCHANGED)
+    airspeed_base = cv2.imread("../images/airspeed_base.png")
+    airspeed_pointer = cv2.imread("../images./airspeed_pointer.png",cv2.IMREAD_UNCHANGED)
 
     altitude = 15555
     speed = 140
@@ -81,9 +81,9 @@ def main_GUI(control_value):
     event, values = window.read(timeout=200)
 
     # Loading load screen and plane image for GPS
-    load_image = cv2.imread('images/dumbshit.jpg')
-    plane_image = Image.open('images/plane.png').convert("RGBA")
-    background_image = Image.open('images/plot2dbackground.jpg').convert("RGBA")
+    load_image = cv2.imread('../images/dumbshit.jpg')
+    plane_image = Image.open('../images/plane.png').convert("RGBA")
+    background_image = Image.open('../images/plot2dbackground.jpg').convert("RGBA")
     newsize = (500, 500)
     background_image = background_image.resize(newsize)
     plane_image = plane_image.resize((int(plane_image.size[0]*0.1), int(plane_image.size[1]*0.1)))
@@ -149,7 +149,7 @@ def main_GUI(control_value):
         img_alt = cv2.imencode(".png", altimeter)[1].tobytes()
         img_speed = cv2.imencode(".png", speedo)[1].tobytes()
 
-        plot_3D = cv2.imread('images/vector3DPlot.jpg')
+        plot_3D = cv2.imread('../images/vector3DPlot.jpg')
         img_3D_plotter = cv2.imencode(".png", plot_3D)[1].tobytes()
         img_2D_plotter = ImageTk.PhotoImage(image=gps_image)
 
@@ -169,7 +169,7 @@ def main_GUI(control_value):
         mach_number = parameterCalc.get_mach_number(altitude, total_speed)
 
         window["-FLIGHTDATA-"].update("""Temperature: {:.0f}\nAirspeed: {:.0f}\nDensity: {:.1f}\n Geopotential Altitude: {:.1f}\nAmbient Pressure: {:.0f}
-         Dynamic Pressure: {:.1f}\n Dynamic Viscosity: {:.1f}\n Mach Number: {:.1f}\n X: {:.1f}\nY: {:.1f}\nZ: {:.1f}\nU: {:.1f}\nV: {:.1f}
+         Dynamic Pressure: {:.1f}\n Dynamic Viscosity: {:.1f}\n Mach Number: {:.1f}\n X: {:.1f} [-5000, 5000]\nY: {:.1f} [-5000, 5000]\nZ: {:.1f} [0, 15000]\nU: {:.1f}\nV: {:.1f}
          W: {:.1f}\nRoll: {:.1f}\nPitch: {:.1f}\nYaw: {:.1f}\nRollDot: {:.1f}\nPitchDot: {:.1f}\nYawDot: {:.1f}\nElevator: {:.1f}
          Aileron: {:.1f}\n Rudder: {:.1f}\n Thrust: {:.1f}""".format(temperature, total_speed,geo_potential_altitude, ambient_pressure, density, 
                                                                      dynamic_pressure, dynamic_viscosity, mach_number, state[3], state[4], state[5], 

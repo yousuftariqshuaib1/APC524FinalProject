@@ -27,6 +27,6 @@ def vector_3D_plotter(state: np.array, fig):
     ax3D.set_ylim(-5000.0, 5000.0)
     ax3D.set_zlim(0, 15000.0)
     
-    plt.savefig('images/vector3DPlot.jpg')
+    plt.savefig('../images/vector3DPlot.jpg')
     plt.clf()
     

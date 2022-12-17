@@ -1,7 +1,5 @@
-
 from typing import Protocol
 import math
-import pytest
 
 # Global Variables
 SPECIFIC_HEAT_RATIO = 1.4 
